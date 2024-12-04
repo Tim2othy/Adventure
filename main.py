@@ -1,8 +1,5 @@
 """Staging-grounds for the game."""
 
-from __future__ import annotations
-
-import random
 import sys
 
 import pygame
