@@ -61,8 +61,8 @@ class Ship(Disk):
         self.ammo: int = 1000
         self.thrust: float = 40 * self.mass
         self.rotation_thrust: float = 100
-        self.move_left: bool = False
         self.move_right: bool = False
+        self.move_left: bool = False
         self.move_down: bool = False
         self.move_up: bool = False
         self.fuel: float = 100
@@ -117,11 +117,11 @@ class Ship(Disk):
 
         """
         if self.fuel > 0:
-            if self.move_left:
+            if self.move_right:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
                 self.pos += (SPEED,0)
 
-            if self.move_right:
+            if self.move_left:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
                 self.pos += (-SPEED,0)
 
@@ -174,7 +174,7 @@ class Ship(Disk):
             GUNBARREL_WIDTH * self.radius,
         )
 
-        # move_left (material)
+        # move_right (material)
         drawy(
             darker_color,
             [
@@ -183,8 +183,8 @@ class Ship(Disk):
                 2.0 * left + 1.0 * backward,
             ],
         )
-        # move_left (active)
-        if self.move_left:
+        # move_right (active)
+        if self.move_right:
             drawy(
                 Color("white"),
                 [
@@ -194,7 +194,7 @@ class Ship(Disk):
                 ],
             )
 
-        # move_right (material)
+        # move_left (material)
         drawy(
             darker_color,
             [
@@ -203,8 +203,8 @@ class Ship(Disk):
                 2.0 * right + 1.0 * backward,
             ],
         )
-        # move_right (active)
-        if self.move_right:
+        # move_left (active)
+        if self.move_left:
             drawy(
                 Color("white"),
                 [
@@ -255,8 +255,8 @@ class ShipInput:
 
     def __init__(
         self,
-        move_left: PygameKey,
         move_right: PygameKey,
+        move_left: PygameKey,
         move_up: PygameKey,
         move_down: PygameKey,
         shoot: PygameKey,
@@ -265,15 +265,15 @@ class ShipInput:
 
         Args:
         ----
-            move_left (pygame_key): Left rotation thruster's key
-            move_right (pygame_key): Right rotation thruster's key
+            move_right (pygame_key): Left rotation thruster's key
+            move_left (pygame_key): Right rotation thruster's key
             move_up (pygame_key): Forward thruster's key
             move_down (pygame_key): Backward thruster's key
             shoot (pygame_key): Pew pew key
 
         """
-        self.move_left = move_left
         self.move_right = move_right
+        self.move_left = move_left
         self.move_up = move_up
         self.move_down = move_down
         self.shoot = shoot
@@ -316,8 +316,8 @@ class PlayerShip(Ship):
             keys (pygame.key.ScancodeWrapper): Pressed keys
 
         """
-        self.move_left = keys[self.spaceship_input.move_left]
         self.move_right = keys[self.spaceship_input.move_right]
+        self.move_left = keys[self.spaceship_input.move_left]
         self.move_up = keys[self.spaceship_input.move_up]
         self.move_down = keys[self.spaceship_input.move_down]
         if keys[self.spaceship_input.shoot]:
