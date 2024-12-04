@@ -60,10 +60,10 @@ class Ship(Disk):
         self.ammo: int = 1000
         self.thrust: float = 40 * self.mass
         self.rotation_thrust: float = 100
-        self.thruster_rot_left: bool = False
-        self.thruster_rot_right: bool = False
-        self.thruster_backward: bool = False
-        self.thruster_forward: bool = False
+        self.move_left: bool = False
+        self.move_right: bool = False
+        self.move_down: bool = False
+        self.move_up: bool = False
         self.fuel: float = 100
         self.fuel_consumption_rate: float = 0
         self.fuel_rot_consumption_rate: float = 0
@@ -116,18 +116,18 @@ class Ship(Disk):
 
         """
         if self.fuel > 0:
-            if self.thruster_rot_left:
+            if self.move_left:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
                 self.angle += self.rotation_thrust * dt
-            if self.thruster_rot_right:
+            if self.move_right:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
                 self.angle -= self.rotation_thrust * dt
 
             forward = self.get_faced_direction()
-            if self.thruster_forward:
+            if self.move_up:
                 self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
                 self.apply_force(forward * self.thrust, dt)
-            if self.thruster_backward:
+            if self.move_down:
                 self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
                 self.apply_force(-forward * self.thrust, dt)
 
@@ -160,8 +160,8 @@ class Ship(Disk):
         def drawy(color: Color, points: list[Vec2]) -> None:
             camera.draw_polygon(color, [self.pos + self.radius * p for p in points])
 
-        # thruster_backward (active)
-        if self.thruster_backward:
+        # move_down (active)
+        if self.move_down:
             drawy(Color("white"), [forward * 2, left * 1.25, right * 1.25])
 
         # "For his neutral special, he wields a cannon"
@@ -172,7 +172,7 @@ class Ship(Disk):
             GUNBARREL_WIDTH * self.radius,
         )
 
-        # thruster_rot_left (material)
+        # move_left (material)
         drawy(
             darker_color,
             [
@@ -181,8 +181,8 @@ class Ship(Disk):
                 2.0 * left + 1.0 * backward,
             ],
         )
-        # thruster_rot_left (active)
-        if self.thruster_rot_left:
+        # move_left (active)
+        if self.move_left:
             drawy(
                 Color("white"),
                 [
@@ -192,7 +192,7 @@ class Ship(Disk):
                 ],
             )
 
-        # thruster_rot_right (material)
+        # move_right (material)
         drawy(
             darker_color,
             [
@@ -201,8 +201,8 @@ class Ship(Disk):
                 2.0 * right + 1.0 * backward,
             ],
         )
-        # thruster_rot_right (active)
-        if self.thruster_rot_right:
+        # move_right (active)
+        if self.move_right:
             drawy(
                 Color("white"),
                 [
@@ -212,8 +212,8 @@ class Ship(Disk):
                 ],
             )
 
-        # thruster_forward (flame)
-        if self.thruster_forward:
+        # move_up (flame)
+        if self.move_up:
             drawy(
                 Color("white"),
                 [
@@ -224,7 +224,7 @@ class Ship(Disk):
                     0.7 * right + 0.7 * backward,
                 ],
             )
-        # thruster_forward (material)
+        # move_up (material)
         drawy(
             darker_color,
             [
@@ -253,27 +253,27 @@ class ShipInput:
 
     def __init__(
         self,
-        thruster_rot_left: PygameKey,
-        thruster_rot_right: PygameKey,
-        thruster_forward: PygameKey,
-        thruster_backward: PygameKey,
+        move_left: PygameKey,
+        move_right: PygameKey,
+        move_up: PygameKey,
+        move_down: PygameKey,
         shoot: PygameKey,
     ) -> None:
         """Create a new map from keys to spaceship-actions.
 
         Args:
         ----
-            thruster_rot_left (pygame_key): Left rotation thruster's key
-            thruster_rot_right (pygame_key): Right rotation thruster's key
-            thruster_forward (pygame_key): Forward thruster's key
-            thruster_backward (pygame_key): Backward thruster's key
+            move_left (pygame_key): Left rotation thruster's key
+            move_right (pygame_key): Right rotation thruster's key
+            move_up (pygame_key): Forward thruster's key
+            move_down (pygame_key): Backward thruster's key
             shoot (pygame_key): Pew pew key
 
         """
-        self.thruster_rot_left = thruster_rot_left
-        self.thruster_rot_right = thruster_rot_right
-        self.thruster_forward = thruster_forward
-        self.thruster_backward = thruster_backward
+        self.move_left = move_left
+        self.move_right = move_right
+        self.move_up = move_up
+        self.move_down = move_down
         self.shoot = shoot
 
 
@@ -314,10 +314,10 @@ class PlayerShip(Ship):
             keys (pygame.key.ScancodeWrapper): Pressed keys
 
         """
-        self.thruster_rot_left = keys[self.spaceship_input.thruster_rot_left]
-        self.thruster_rot_right = keys[self.spaceship_input.thruster_rot_right]
-        self.thruster_forward = keys[self.spaceship_input.thruster_forward]
-        self.thruster_backward = keys[self.spaceship_input.thruster_backward]
+        self.move_left = keys[self.spaceship_input.move_left]
+        self.move_right = keys[self.spaceship_input.move_right]
+        self.move_up = keys[self.spaceship_input.move_up]
+        self.move_down = keys[self.spaceship_input.move_down]
         if keys[self.spaceship_input.shoot]:
             self.shoot()
 
