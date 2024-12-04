@@ -12,7 +12,7 @@ from universe import Planet, Universe
 
 # Initialize Pygame
 pygame.init()
-pygame.display.set_caption("Ocean Game")
+pygame.display.set_caption("Adventure Game")
 
 SCREEN_SIZE = Vec2(1800, 950)
 
@@ -29,7 +29,7 @@ player = [
         Vec2(0, 0),
         1,
         10,
-        Color("brown"),
+        Color("green"),
         ShipInput(
             pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_SPACE
         ),

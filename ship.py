@@ -181,7 +181,7 @@ class Ship(Disk):
             [
                 0.7 * left + 0.7 * forward,
                 0.5 * left + 0.5 * backward,
-                2.0 * left + 1.0 * backward,
+                2.0 * left + 4.0 * backward,
             ],
         )
         # move_right (active)
@@ -201,7 +201,7 @@ class Ship(Disk):
             [
                 0.7 * right + 0.7 * forward,
                 0.5 * right + 0.5 * backward,
-                2.0 * right + 1.0 * backward,
+                2.0 * right + 4.0 * backward,
             ],
         )
         # move_left (active)
