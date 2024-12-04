@@ -25,6 +25,7 @@ ENEMY_SHOOT_RANGE = 400
 
 # How long a ship should glow after taking damage
 DAMAGE_INDICATOR_TIME = 0.75
+SPEED = 0.5
 
 
 class Ship(Disk):
@@ -118,10 +119,11 @@ class Ship(Disk):
         if self.fuel > 0:
             if self.move_left:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
-                self.angle += self.rotation_thrust * dt
+                self.pos += (SPEED,0)
+
             if self.move_right:
                 self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
-                self.angle -= self.rotation_thrust * dt
+                self.pos += (-SPEED,0)
 
             forward = self.get_faced_direction()
             if self.move_up:
