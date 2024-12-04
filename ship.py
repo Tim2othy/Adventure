@@ -19,8 +19,8 @@ if TYPE_CHECKING:
 
 
 BULLET_SPEED = 300
-GUNBARREL_LENGTH = 2  # relative to radius
-GUNBARREL_WIDTH = 0.8  # relative to radius
+HEAD_LENGTH = 3  # relative to radius
+HEAD_WIDTH = 3  # relative to radius
 ENEMY_SHOOT_RANGE = 400
 
 # How long a ship should glow after taking damage
@@ -52,7 +52,7 @@ class Ship(Disk):
         """
         super().__init__(pos, vel, density, size, color)
         self.size: float = size
-        self.angle: float = 0
+        self.angle: float = 270
         self.health: float = 10000
         self.projectiles: list[Bullet] = []
         self.gun_cooldown: float = 0
@@ -88,7 +88,7 @@ class Ship(Disk):
         """Try to shoot a bullet."""
         if self.gun_cooldown <= 0 and self.ammo > 0:
             forward = self.get_faced_direction()
-            bullet_pos = self.pos + forward * self.radius * GUNBARREL_LENGTH
+            bullet_pos = self.pos + forward * self.radius * HEAD_LENGTH
             bullet_vel = self.vel + forward * BULLET_SPEED
             self.projectiles.append(Bullet(bullet_pos, bullet_vel, self.color))
             self.gun_cooldown = 0.5
@@ -171,8 +171,8 @@ class Ship(Disk):
         camera.draw_line(
             darker_color,
             self.pos,
-            self.pos + forward * self.radius * GUNBARREL_LENGTH,
-            GUNBARREL_WIDTH * self.radius,
+            self.pos + forward * self.radius * HEAD_LENGTH,
+            HEAD_WIDTH * self.radius,
         )
 
         # move_right (material)
