@@ -65,7 +65,7 @@ class Ship(Disk):
         self.move_left: bool = False
         self.move_down: bool = False
         self.move_up: bool = False
-        self.fuel: float = 100
+
         self.fuel_consumption_rate: float = 0
         self.fuel_rot_consumption_rate: float = 0
 
@@ -116,22 +116,18 @@ class Ship(Disk):
             dt (float): Passed time
 
         """
-        if self.fuel > 0:
-            if self.move_right:
-                self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
-                self.pos += (SPEED,0)
+        if self.move_right:
+            self.pos += (SPEED,0)
 
-            if self.move_left:
-                self.fuel = max(0, self.fuel - dt * self.fuel_rot_consumption_rate)
-                self.pos += (-SPEED,0)
+        if self.move_left:
+            self.pos += (-SPEED,0)
 
-            forward = self.get_faced_direction()
-            if self.move_up:
-                self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
-                self.pos += (0,-SPEED)
-            if self.move_down:
-                self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
-                self.pos += (0,SPEED)
+        forward = self.get_faced_direction()
+        if self.move_up:
+            self.pos += (0,-SPEED)
+
+        if self.move_down:
+            self.pos += (0,SPEED)
 
 
         self.damage_indicator_timer = max(0, self.damage_indicator_timer - dt)
