@@ -128,10 +128,11 @@ class Ship(Disk):
             forward = self.get_faced_direction()
             if self.move_up:
                 self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
-                self.apply_force(forward * self.thrust, dt)
+                self.pos += (0,-SPEED)
             if self.move_down:
                 self.fuel = max(0, self.fuel - dt * self.fuel_consumption_rate)
-                self.apply_force(-forward * self.thrust, dt)
+                self.pos += (0,SPEED)
+
 
         self.damage_indicator_timer = max(0, self.damage_indicator_timer - dt)
 
