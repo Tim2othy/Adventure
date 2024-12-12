@@ -1,15 +1,9 @@
 """Projectiles, shooting through space."""
 
-from typing import TYPE_CHECKING
-
 from pygame import Color
 from pygame.math import Vector2 as Vec2
-
 from camera import Camera
 from physics import PhysicalObject
-
-if TYPE_CHECKING:
-    from ship import Ship
 
 
 class Bullet(PhysicalObject):
@@ -36,5 +30,4 @@ class Bullet(PhysicalObject):
             camera (Camera): Camera to draw on
 
         """
-        forward = self.vel.normalize() if self.vel != Vec2(0, 0) else Vec2(1, 0)
         camera.draw_circle(self.color, self.pos, 4)

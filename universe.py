@@ -4,18 +4,17 @@ everything else, you must first invent the universe.
 
 from __future__ import annotations
 
-import math
 from typing import TYPE_CHECKING
 
 import pygame
-from pygame import Color, Rect
+from pygame import Color
 from pygame.math import Vector2 as Vec2
 
-from physics import Disk, PhysicalObject
+from physics import Disk
 
 if TYPE_CHECKING:
     from camera import Camera
-    from ship import BulletEnemy, PlayerShip, Ship
+    from ship import BulletEnemy, PlayerShip
 
 
 class Planet(Disk):
