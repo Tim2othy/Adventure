@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
-from pygame import Color
+from pygame import Color, Rect
 from pygame.math import Vector2 as Vec2
 
 if TYPE_CHECKING:
@@ -137,3 +137,69 @@ class Disk(PhysicalObject):
 
         """
         return self.pos.distance_squared_to(disk.pos) < (self.radius + disk.radius) ** 2
+
+
+class Rectangle(Rect):
+    """A rectangular impassable static object."""
+
+    def __init__(
+        self,
+        rect: Rect,
+        color: Color,
+        caption: str,
+    ) -> None:
+        """Create a new Rectangll.
+
+        Args:
+        ----
+            rect (Rect): Rectangular area
+            color (Color): Color
+            caption (str): Area's "Name"
+
+        """
+        super().__init__(rect)
+        self.color = color
+
+    @classmethod
+    def create(
+        cls,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        color: Color,
+        caption: str = "Barrier",
+    ) -> "Rectangle":
+        """Factory method to easily create a rectangular barrier.
+
+        Args:
+        ----
+            x (float): X position
+            y (float): Y position
+            width (float): Width
+            height (float): Height
+            color (Color): Color
+            caption (str): Name of barrier
+
+        Returns:
+        ----
+            Rectangle: New barrier instance
+        """
+        return cls(Rect(x, y, width, height), color, caption)
+
+    def draw(self, camera: Camera) -> None:
+        """Draw `self` on `camera`.
+
+        Args:
+        ----
+            camera (Camera): Camera to draw on
+
+        """
+        camera.draw_rect(self.color, self)
+
+
+# Create a wall barrier
+wall = Rectangle.create(500, 500, 50, 200, Color(128, 128, 128), "Wall")
+
+# Create floor with debug visualization
+floor = Rectangle.create(0, 550, 800, 50, Color(100, 100, 100), "Floor")
